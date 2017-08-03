@@ -10,6 +10,7 @@ public class unit
     private Color _unitColor;
 
     private Point targetLocation;
+    private int _targetIndex;
 
     private bool _isSelected;
 
@@ -48,9 +49,15 @@ public class unit
         }
     }
 
-    public void setTargetLocation(Point targetLocation)
+    public void setTargetLocation(Point targetLocation, int _targetIndex)
     {
         this.targetLocation = targetLocation;
+        this._targetIndex = _targetIndex;
+    }
+
+    public void setTargetIndex(int _targetIndex)
+    {
+        this._targetIndex = _targetIndex;
     }
 
     public Texture2D unitTexture
@@ -79,5 +86,10 @@ public class unit
     {
         set { _unitRectangle.Location = value; }
         get { return _unitRectangle.Location; }
+    }
+
+    public int targetIndex
+    {
+        get { return _targetIndex; }
     }
 }

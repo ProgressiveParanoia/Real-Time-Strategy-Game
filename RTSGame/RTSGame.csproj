@@ -45,7 +45,6 @@
     <Compile Include="Code\Game1.cs" />
     <Compile Include="Code\LevelGenerator.cs" />
     <Compile Include="Code\Node.cs" />
-    <Compile Include="Code\Player.cs" />
     <Compile Include="Code\Program.cs" />
     <Compile Include="Code\unit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

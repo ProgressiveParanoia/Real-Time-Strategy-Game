@@ -130,6 +130,7 @@ public class BoxSelection
 
     public bool canDraw
     {
+        set { _canDraw = value; }
         get { return _canDraw; }
     }
 
