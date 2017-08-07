@@ -13,8 +13,11 @@ public class unit
     private int _targetIndex;
 
     private bool _isSelected;
+    private bool _isColliding;
 
     private int unitSpeed;
+
+    private unit tempCollidingUnitIndex;
     public unit(Texture2D _unitTexture, Rectangle _unitRectangle, Color _unitColor)
     {
         this._unitTexture = _unitTexture;
@@ -23,6 +26,8 @@ public class unit
 
         unitSpeed = 4;
         targetLocation = _unitRectangle.Location;
+
+        tempCollidingUnitIndex = null;
     }
 
     public void move()
@@ -47,6 +52,29 @@ public class unit
                     unitPosition = new Point(unitPosition.X, unitPosition.Y + unitSpeed);
             }
         }
+    }
+
+    public void checkUnitCollision(Rectangle unitRect, unit unitIndex)
+    {
+        if (_unitRectangle.Intersects(unitRect))
+        {
+            isColliding = true;
+            tempCollidingUnitIndex = unitIndex;
+        }
+        else
+        if (!_unitRectangle.Intersects(unitRect))
+        {
+            if (unitIndex != tempCollidingUnitIndex)
+            {
+                isColliding = false;
+                tempCollidingUnitIndex = null;
+            }
+        }
+    }
+
+    public void checkEnvironmentCollision()
+    {
+
     }
 
     public void setTargetLocation(Point targetLocation, int _targetIndex)
@@ -76,6 +104,11 @@ public class unit
         get { return _isSelected; }
     }
 
+    public bool isColliding
+    {
+        set { _isColliding = value; }
+        get { return _isColliding; }
+    }
     public Color unitColor
     {
         set { _unitColor = value; }

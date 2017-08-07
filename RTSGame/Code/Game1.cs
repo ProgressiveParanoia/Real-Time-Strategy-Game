@@ -124,18 +124,7 @@ namespace RTSGame
                         {
                             if(playerUnits[playerUnitIndex].isSelected && !unitSelection.canDraw)
                             {
-                                //if (!nodes[nodeIndex].occupied && nodes[nodeIndex].occupantIndex == -1)
-                                //{
-                                //    playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex].nodePosition, nodeIndex);
-
                                 nodes[nodeIndex].occupantIndex = playerUnitIndex;
-                                //}
-
-                                //if (nodes[nodeIndex].occupied)
-                                //{
-                                //    playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex - 1].nodePosition, nodeIndex - 1);
-                                //    Console.WriteLine("stupidthang:" + nodeIndex + "past index:" + (nodeIndex - 1));
-                                //}
                                 playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex].nodePosition,nodeIndex);
                             }
                         }
@@ -156,23 +145,13 @@ namespace RTSGame
                             {
                                 nodes[nodeIndex].occupantIndex = -1;
                                 nodes[nodeIndex].occupied = false;
-                            }
+                            } //clear out the node; set to unoccupied when player leaves space
                         }
 
                         if (playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle))
                         {
                             nodes[nodeIndex].occupied = true;
-                        }
-
-                        if (playerUnits.Where(Unit => Unit.isSelected == true).Count() > 1 && !unitSelection.canDraw)
-                        {
-                            if (nodes[nodeIndex].occupied)
-                            {
-                                if (playerUnits[nodes[nodeIndex].occupantIndex].unitRectangle.Intersects(playerUnits[playerUnitIndex].unitRectangle))
-                                {
-                                    playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex-1].nodePosition, nodeIndex-1);
-                                }
-                            }
+                            //occupy node when player gets to location
                         }
                     }
                 }
@@ -203,9 +182,22 @@ namespace RTSGame
                 clearSelection();
             }
 
+
+            //collision checking and unit movement
             foreach (unit selectUnit in playerUnits)
             {
-                selectUnit.move();
+                foreach(unit otherUnit in playerUnits)
+                {
+                    if (selectUnit != otherUnit)
+                    {
+                        selectUnit.checkUnitCollision(otherUnit.unitRectangle,otherUnit);
+                    }
+                }
+
+                if (!selectUnit.isColliding)
+                {
+                    selectUnit.move();
+                }
             }
 
             unitSelection.generateBox();
