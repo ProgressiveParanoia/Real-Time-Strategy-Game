@@ -15,6 +15,8 @@ public class unit
     private bool _isSelected;
     private bool _isColliding;
 
+    public bool moving;
+
     private int unitSpeed;
 
     private unit tempCollidingUnitIndex;
@@ -32,8 +34,6 @@ public class unit
 
     public void move()
     {
-        //move in X axis first then move Y
-
         if (unitPosition.X != targetLocation.X)
         {
             if (unitPosition.X > targetLocation.X)
@@ -52,8 +52,14 @@ public class unit
                     unitPosition = new Point(unitPosition.X, unitPosition.Y + unitSpeed);
             }
         }
-    }
 
+        if (unitPosition.X == targetLocation.X && unitPosition.Y == targetLocation.Y)
+        {
+            moving = false;
+        }
+        else
+            moving = true;
+    }
     public void checkUnitCollision(Rectangle unitRect, unit unitIndex)
     {
         if (_unitRectangle.Intersects(unitRect))

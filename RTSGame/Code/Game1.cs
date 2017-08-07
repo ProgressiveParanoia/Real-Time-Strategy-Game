@@ -98,22 +98,6 @@ namespace RTSGame
                 Exit();
 
             //node traversal
-            //foreach (Node n in nodes)
-            //{
-            //    if (n.nodeRectangle.Intersects(mouseRect))
-            //    {
-            //        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-            //        {
-            //            if (testUnit.isSelected && !unitSelection.canDraw)
-            //            {
-            //                testUnit.setTargetLocation(n.nodePosition);
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
-
-            //node traversal
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 for (int nodeIndex = 0; nodeIndex < nodes.Count; nodeIndex++)
@@ -131,32 +115,33 @@ namespace RTSGame
                     }
                 }
             }
-
-            //node checker
-            for(int nodeIndex = 0; nodeIndex < nodes.Count; nodeIndex++)
+        //node checker
+        
+            for (int nodeIndex = 0; nodeIndex < nodes.Count; nodeIndex++)
             {
                 for(int playerUnitIndex = 0; playerUnitIndex < playerUnits.Count; playerUnitIndex++)
                 {
-                    if (nodes[nodeIndex].occupantIndex == playerUnitIndex)
+                    for (int otherUnitIndex = 0; otherUnitIndex < playerUnits.Count; otherUnitIndex++)
                     {
-                        if (!playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle))
+                        if(playerUnitIndex != otherUnitIndex)
                         {
-                            if (nodes[nodeIndex].occupied)
+                            if (playerUnits[playerUnitIndex].unitRectangle.Intersects(playerUnits[otherUnitIndex].unitRectangle))
                             {
-                                nodes[nodeIndex].occupantIndex = -1;
-                                nodes[nodeIndex].occupied = false;
-                            } //clear out the node; set to unoccupied when player leaves space
-                        }
+                                if (playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle))
+                                {
+                                    playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex].nodePosition, nodeIndex);
+                                    playerUnits[playerUnitIndex].move();
+                                    playerUnits[playerUnitIndex].isColliding = false;
 
-                        if (playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle))
-                        {
-                            nodes[nodeIndex].occupied = true;
-                            //occupy node when player gets to location
+                                    Console.WriteLine("Touched the node");
+                                    goto here;
+                                }
+                            }
                         }
                     }
                 }
             }
-
+            here:
             if (unitSelection.canDraw)
             {
                 /* Index references: [0] = BoxRectY [1] = BoxRectY + BoxRectHeight [2] = BoxRectX [3] = BoxRectX + BoxRectWidth*/
@@ -186,14 +171,6 @@ namespace RTSGame
             //collision checking and unit movement
             foreach (unit selectUnit in playerUnits)
             {
-                foreach(unit otherUnit in playerUnits)
-                {
-                    if (selectUnit != otherUnit)
-                    {
-                        selectUnit.checkUnitCollision(otherUnit.unitRectangle,otherUnit);
-                    }
-                }
-
                 if (!selectUnit.isColliding)
                 {
                     selectUnit.move();
