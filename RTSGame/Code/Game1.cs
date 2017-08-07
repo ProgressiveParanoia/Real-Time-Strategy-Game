@@ -127,9 +127,9 @@ namespace RTSGame
                         {
                             if (playerUnits[playerUnitIndex].unitRectangle.Intersects(playerUnits[otherUnitIndex].unitRectangle))
                             {
-                                if (playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle))
+                                if (playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle) && !playerUnits[playerUnitIndex].moving)
                                 {
-                                    playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex].nodePosition, nodeIndex);
+                                    playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex-1].nodePosition, nodeIndex-1);
                                     playerUnits[playerUnitIndex].move();
                                     playerUnits[playerUnitIndex].isColliding = false;
 
