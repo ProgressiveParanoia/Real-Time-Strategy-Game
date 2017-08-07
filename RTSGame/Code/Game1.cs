@@ -71,7 +71,7 @@ namespace RTSGame
 
             playerUnits = new List<unit>();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 10; i++)
             {
                 testUnit = new unit(Content.Load<Texture2D>(@"LIFE"), new Rectangle(nodes[22 + i].nodePosition.X, nodes[22 + i].nodePosition.Y, playerSize, nodeSize), Color.White);
                 testUnit.setTargetIndex(22 + i);
@@ -127,10 +127,14 @@ namespace RTSGame
                         {
                             if (playerUnits[playerUnitIndex].unitRectangle.Intersects(playerUnits[otherUnitIndex].unitRectangle))
                             {
-                                if (playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle) && !playerUnits[playerUnitIndex].moving)
+                                if (playerUnits[playerUnitIndex].unitRectangle.Intersects(nodes[nodeIndex].nodeRectangle) && !playerUnits[playerUnitIndex].moving && playerUnits[playerUnitIndex].isSelected)
                                 {
                                     playerUnits[playerUnitIndex].setTargetLocation(nodes[nodeIndex-1].nodePosition, nodeIndex-1);
+                                    playerUnits[otherUnitIndex].setTargetLocation(nodes[nodeIndex].nodePosition, nodeIndex);
+
                                     playerUnits[playerUnitIndex].move();
+                                    //playerUnits[otherUnitIndex].move();
+
                                     playerUnits[playerUnitIndex].isColliding = false;
 
                                     Console.WriteLine("Touched the node");
